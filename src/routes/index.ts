@@ -4,6 +4,7 @@ import RegisterController from '@controllers/RegisterController';
 import LoginController from '@controllers/LoginController';
 
 import SessionController from '@controllers/SessionController';
+import CategoryController from '@controllers/CategoryController';
 
 import { authenticated } from '../app/middlewares';
 
@@ -18,5 +19,8 @@ routes.use(authenticated);
 
 routes.get('/sessions', SessionController.index);
 routes.post('/sessions', SessionController.store);
+
+routes.get('/sessions/:session_id/categories', CategoryController.index);
+routes.post('/sessions/:session_id/categories', CategoryController.store);
 
 export default routes;
