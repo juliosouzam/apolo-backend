@@ -1,13 +1,16 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import User from './User';
 
-@Entity('users')
-class User {
+@Entity('sessions')
+class Session {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -15,13 +18,14 @@ class User {
   name: string;
 
   @Column()
-  email: string;
+  url: string;
 
   @Column()
-  password: string;
+  user_id: string;
 
-  @Column()
-  is_admin: boolean;
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;
@@ -30,4 +34,4 @@ class User {
   updated_at: Date;
 }
 
-export default User;
+export default Session;
