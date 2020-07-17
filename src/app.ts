@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import express, { Express } from 'express';
 
+import './database';
+
 import routes from './routes';
 
 class Application {
@@ -9,7 +11,13 @@ class Application {
   constructor() {
     this.express = express();
 
+    this.middlewares();
     this.routes();
+  }
+
+  middlewares() {
+    this.express.use(express.json());
+    this.express.use(express.urlencoded({ extended: true }));
   }
 
   routes() {

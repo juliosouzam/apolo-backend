@@ -14,10 +14,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@config/*": ["./src/config/*"]
+      "@config/*": ["./src/config/*"],
+      "@controllers/*": ["./src/app/controllers/*"],
+      "@entities/*": ["./src/app/entities/*"]
     }
   },
   "include": ["src/**/*"]
