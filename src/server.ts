@@ -1,8 +1,5 @@
-import express from 'express';
+import app from './app';
 
-const app = express();
-
-app.get('/', (request, response) => response.json({ status: true }));
-
+const PORT = process.env.PORT || 3333;
 // eslint-disable-next-line no-console
-app.listen(3333, () => console.log('running'));
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));
