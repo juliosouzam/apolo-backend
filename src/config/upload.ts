@@ -10,20 +10,15 @@ interface IUploadConfig {
   storage: StorageEngine;
 }
 
-interface Request {
-  type: 'music' | 'file';
-}
+export default {
+  tmpFolder,
+  storage: diskStorage({
+    destination: tmpFolder,
+    filename: (req, file, callback) => {
+      const fileHash = crypto.randomBytes(10).toString('hex');
+      const fileName = `${fileHash}-${file.originalname}`;
 
-export default ({ type }: Request): IUploadConfig =>
-  ({
-    tmpFolder,
-    storage: diskStorage({
-      destination: resolve(tmpFolder, type === 'music' ? 'musics' : 'uploads'),
-      filename: (req, file, callback) => {
-        const fileHash = crypto.randomBytes(10).toString('hex');
-        const fileName = `${fileHash}-${file.originalname}`;
-
-        return callback(null, fileName);
-      },
-    }),
-  } as IUploadConfig);
+      return callback(null, fileName);
+    },
+  }),
+} as IUploadConfig;

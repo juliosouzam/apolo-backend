@@ -10,6 +10,7 @@ import SessionController from '@controllers/SessionController';
 import CategoryController from '@controllers/CategoryController';
 import ArtistController from '@controllers/ArtistController';
 import AlbumController from '@controllers/AlbumController';
+import MusicController from '@controllers/MusicController';
 
 import CategoryArtistController from '@controllers/CategoryArtistController';
 import CategoryAlbumController from '@controllers/CategoryAlbumController';
@@ -17,8 +18,7 @@ import CategoryAlbumController from '@controllers/CategoryAlbumController';
 import { authenticated } from '../app/middlewares';
 
 const routes = Router();
-const uploadFile = multer(uploadConfig({ type: 'file' }));
-// const uploadMusic = multer(uploadConfig({ type: 'music' }));
+const upload = multer(uploadConfig);
 
 routes.get('/', (request, response) => response.json({ status: true }));
 
@@ -38,7 +38,7 @@ routes.post('/sessions/:session_id/categories', CategoryController.store);
 routes.get('/sessions/:session_id/artists', ArtistController.index);
 routes.post(
   '/sessions/:session_id/artists',
-  uploadFile.single('file'),
+  upload.single('file'),
   ArtistController.store,
 );
 
@@ -53,7 +53,7 @@ routes.get(
 routes.get('/sessions/:session_id/albums', AlbumController.index);
 routes.post(
   '/sessions/:session_id/albums',
-  uploadFile.single('file'),
+  upload.single('file'),
   AlbumController.store,
 );
 
@@ -64,5 +64,21 @@ routes.get(
 
 // Musics
 // - ...
+
+routes.get('/sessions/:session_id/musics', MusicController.index);
+routes.post(
+  '/sessions/:session_id/musics',
+  upload.fields([
+    {
+      name: 'cover',
+      maxCount: 1,
+    },
+    {
+      name: 'music',
+      maxCount: 1,
+    },
+  ]),
+  MusicController.store,
+);
 
 export default routes;

@@ -9,19 +9,40 @@ import {
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 
+import Artist from './Artist';
 import Category from './Category';
 import Session from './Session';
+import Album from './Album';
 
-@Entity('artists')
-class Artist {
+@Entity('musics')
+class Music {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text', { nullable: false })
   name: string;
 
+  @Column('text', { nullable: true })
+  cover?: string | null;
+
   @Column('text', { nullable: false })
-  cover: string;
+  originalname: string;
+
+  @Column('text', { nullable: false })
+  mimetype: string;
+
+  @Column('int', { nullable: false })
+  size: number;
+
+  @Column('text', { nullable: false })
+  filename: string;
+
+  @Column('uuid', { nullable: true })
+  album_id: string | null;
+
+  @ManyToOne(() => Album)
+  @JoinColumn({ name: 'album_id' })
+  album?: Album;
 
   @Column('uuid', { nullable: false })
   category_id: string;
@@ -36,6 +57,13 @@ class Artist {
   @ManyToOne(() => Session)
   @JoinColumn({ name: 'session_id' })
   session: Session;
+
+  @Column('uuid', { nullable: false })
+  artist_id: string;
+
+  @ManyToOne(() => Artist)
+  @JoinColumn({ name: 'artist_id' })
+  artist: Artist;
 
   @Expose({ name: 'cover_url' })
   getCoverUrl(): string {
@@ -58,4 +86,4 @@ class Artist {
   updated_at: Date;
 }
 
-export default Artist;
+export default Music;

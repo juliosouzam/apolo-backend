@@ -1,6 +1,10 @@
+import fs from 'fs';
+import path from 'path';
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { classToClass } from 'class-transformer';
+
+import uploadConfig from '@config/upload';
 
 import Album from '@entities/Album';
 
@@ -18,6 +22,7 @@ class AlbumController {
   public async store(request: Request, response: Response): Promise<Response> {
     const { session_id } = request.params;
     const { name, category_id, artist_id } = request.body;
+    const { file } = request;
 
     const albumRepository = getRepository(Album);
 
@@ -26,12 +31,21 @@ class AlbumController {
     });
 
     if (albumExists) {
+      await fs.promises.unlink(
+        path.resolve(uploadConfig.tmpFolder, file.filename),
+      );
+
       return response.status(400).json({ error: 'Album already exists.' });
     }
 
+    await fs.promises.rename(
+      path.resolve(uploadConfig.tmpFolder, file.filename),
+      path.resolve(uploadConfig.tmpFolder, 'uploads', file.filename),
+    );
+
     const album = albumRepository.create({
       name,
-      cover: request.file.filename,
+      cover: file.filename,
       session_id,
       category_id,
       artist_id,

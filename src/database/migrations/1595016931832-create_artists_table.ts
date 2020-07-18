@@ -21,6 +21,7 @@ export default class CreateArtistsTable1595016931832
           {
             name: 'cover',
             type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'category_id',

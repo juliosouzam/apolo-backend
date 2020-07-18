@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateAlbumsTable1595021159445
+export default class CreateMusicsTable1595040711435
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'albums',
+        name: 'musics',
         columns: [
           {
             name: 'id',
@@ -21,6 +21,27 @@ export default class CreateAlbumsTable1595021159445
           {
             name: 'cover',
             type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'originalname',
+            type: 'varchar',
+          },
+          {
+            name: 'mimetype',
+            type: 'varchar',
+          },
+          {
+            name: 'size',
+            type: 'int',
+          },
+          {
+            name: 'filename',
+            type: 'varchar',
+          },
+          {
+            name: 'album_id',
+            type: 'uuid',
             isNullable: true,
           },
           {
@@ -48,7 +69,15 @@ export default class CreateAlbumsTable1595021159445
         ],
         foreignKeys: [
           {
-            name: 'albums_artist_id',
+            name: 'musics_album_id',
+            columnNames: ['album_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'albums',
+            onDelete: 'SET NULL',
+            onUpdate: 'CASCADE',
+          },
+          {
+            name: 'musics_artist_id',
             columnNames: ['artist_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'artists',
@@ -56,7 +85,7 @@ export default class CreateAlbumsTable1595021159445
             onUpdate: 'CASCADE',
           },
           {
-            name: 'albums_category_id',
+            name: 'musics_category_id',
             columnNames: ['category_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'categories',
@@ -64,7 +93,7 @@ export default class CreateAlbumsTable1595021159445
             onUpdate: 'CASCADE',
           },
           {
-            name: 'albums_session_id',
+            name: 'musics_session_id',
             columnNames: ['session_id'],
             referencedColumnNames: ['id'],
             referencedTableName: 'sessions',
@@ -77,6 +106,6 @@ export default class CreateAlbumsTable1595021159445
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('albums');
+    await queryRunner.dropTable('musics');
   }
 }

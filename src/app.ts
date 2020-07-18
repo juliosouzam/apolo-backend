@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { resolve } from 'path';
-import express, { Express } from 'express';
+import express, { Express, Request, Response, NextFunction } from 'express';
+import 'express-async-errors';
 
 import './database';
 
@@ -14,6 +15,8 @@ class Application {
 
     this.middlewares();
     this.routes();
+
+    this.errorHandler();
   }
 
   middlewares() {
@@ -27,6 +30,22 @@ class Application {
 
   routes() {
     this.express.use(routes);
+  }
+
+  errorHandler() {
+    this.express.use(
+      (err: Error, request: Request, response: Response, _: NextFunction) => {
+        if (process.env.NODE_ENV !== 'production') {
+          return response
+            .status(400)
+            .json({ status: 'error', message: err.message });
+        }
+
+        return response
+          .status(500)
+          .json({ status: 'error', message: 'Internal Server Error' });
+      },
+    );
   }
 }
 

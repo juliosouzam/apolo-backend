@@ -46,16 +46,16 @@ class Album {
   artist: Artist;
 
   @Expose({ name: 'cover_url' })
-  getCoverUrl(): string | null {
+  getCoverUrl(): string {
     if (!this.cover) {
-      return null;
+      return 'https://picsum.photos/1280/720';
     }
 
     switch ('disk') {
       case 'disk':
         return `http://localhost:3333/files/${this.cover}`;
       default:
-        return null;
+        return 'https://picsum.photos/1280/720';
     }
   }
 
