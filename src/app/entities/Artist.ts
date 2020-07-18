@@ -7,10 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import User from './User';
+import Category from './Category';
+import Session from './Session';
 
-@Entity('sessions')
-class Session {
+@Entity('artists')
+class Artist {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -18,14 +19,21 @@ class Session {
   name: string;
 
   @Column('text', { nullable: false })
-  url: string;
+  cover: string;
 
   @Column('uuid', { nullable: false })
-  user_id: string;
+  category_id: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
+
+  @Column('uuid', { nullable: false })
+  session_id: string;
+
+  @ManyToOne(() => Session)
+  @JoinColumn({ name: 'session_id' })
+  session: Session;
 
   @CreateDateColumn()
   created_at: Date;
@@ -34,4 +42,4 @@ class Session {
   updated_at: Date;
 }
 
-export default Session;
+export default Artist;

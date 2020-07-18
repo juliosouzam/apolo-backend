@@ -16,9 +16,12 @@ module.exports = {
       {
         alias: {
           '@config': './src/config',
+          '@controllers': './src/app/controllers',
+          '@entities': './src/app/entities',
         },
       },
     ],
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
   ],
   ignore: ['**/*.spec.ts'],
 };

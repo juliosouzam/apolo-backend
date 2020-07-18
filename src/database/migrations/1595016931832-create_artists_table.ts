@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateSessionsTable1595002599184
+export default class CreateArtistsTable1595016931832
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'sessions',
+        name: 'artists',
         columns: [
           {
             name: 'id',
@@ -19,11 +19,15 @@ export default class CreateSessionsTable1595002599184
             type: 'varchar',
           },
           {
-            name: 'url',
+            name: 'cover',
             type: 'varchar',
           },
           {
-            name: 'user_id',
+            name: 'category_id',
+            type: 'uuid',
+          },
+          {
+            name: 'session_id',
             type: 'uuid',
           },
           {
@@ -39,10 +43,18 @@ export default class CreateSessionsTable1595002599184
         ],
         foreignKeys: [
           {
-            name: 'sessions_user_id',
-            columnNames: ['user_id'],
+            name: 'artists_category_id',
+            columnNames: ['category_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'users',
+            referencedTableName: 'categories',
+            onDelete: 'SET NULL',
+            onUpdate: 'CASCADE',
+          },
+          {
+            name: 'artists_session_id',
+            columnNames: ['session_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'sessions',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
           },
@@ -52,6 +64,6 @@ export default class CreateSessionsTable1595002599184
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('sessions');
+    await queryRunner.dropTable('artists');
   }
 }

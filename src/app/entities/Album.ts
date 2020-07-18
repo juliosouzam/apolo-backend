@@ -7,15 +7,27 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import Artist from './Artist';
+import Category from './Category';
 import Session from './Session';
 
-@Entity('categories')
-class Category {
+@Entity('albums')
+class Album {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text', { nullable: false })
   name: string;
+
+  @Column('text', { nullable: false })
+  cover: string;
+
+  @Column('uuid', { nullable: false })
+  category_id: string;
+
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @Column('uuid', { nullable: false })
   session_id: string;
@@ -24,6 +36,13 @@ class Category {
   @JoinColumn({ name: 'session_id' })
   session: Session;
 
+  @Column('uuid', { nullable: false })
+  artist_id: string;
+
+  @ManyToOne(() => Artist)
+  @JoinColumn({ name: 'artist_id' })
+  artist: Artist;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -31,4 +50,4 @@ class Category {
   updated_at: Date;
 }
 
-export default Category;
+export default Album;

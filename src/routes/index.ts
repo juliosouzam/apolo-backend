@@ -5,6 +5,11 @@ import LoginController from '@controllers/LoginController';
 
 import SessionController from '@controllers/SessionController';
 import CategoryController from '@controllers/CategoryController';
+import ArtistController from '@controllers/ArtistController';
+import AlbumController from '@controllers/AlbumController';
+
+import CategoryArtistController from '@controllers/CategoryArtistController';
+import CategoryAlbumController from '@controllers/CategoryAlbumController';
 
 import { authenticated } from '../app/middlewares';
 
@@ -22,5 +27,29 @@ routes.post('/sessions', SessionController.store);
 
 routes.get('/sessions/:session_id/categories', CategoryController.index);
 routes.post('/sessions/:session_id/categories', CategoryController.store);
+
+// Artists
+
+routes.get('/sessions/:session_id/artists', ArtistController.index);
+routes.post('/sessions/:session_id/artists', ArtistController.store);
+
+routes.get(
+  '/sessions/:session_id/categories/:category_id/artists',
+  CategoryArtistController.index,
+);
+
+// Albuns
+// - Name, Cover, Artist, Category, Session
+
+routes.get('/sessions/:session_id/albums', AlbumController.index);
+routes.post('/sessions/:session_id/albums', AlbumController.store);
+
+routes.get(
+  '/sessions/:session_id/categories/:category_id/albums',
+  CategoryAlbumController.index,
+);
+
+// Musics
+// - ...
 
 export default routes;

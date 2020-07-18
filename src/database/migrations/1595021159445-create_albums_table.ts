@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateSessionsTable1595002599184
+export default class CreateAlbumsTable1595021159445
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'sessions',
+        name: 'albums',
         columns: [
           {
             name: 'id',
@@ -19,11 +19,19 @@ export default class CreateSessionsTable1595002599184
             type: 'varchar',
           },
           {
-            name: 'url',
+            name: 'cover',
             type: 'varchar',
           },
           {
-            name: 'user_id',
+            name: 'artist_id',
+            type: 'uuid',
+          },
+          {
+            name: 'category_id',
+            type: 'uuid',
+          },
+          {
+            name: 'session_id',
             type: 'uuid',
           },
           {
@@ -39,10 +47,26 @@ export default class CreateSessionsTable1595002599184
         ],
         foreignKeys: [
           {
-            name: 'sessions_user_id',
-            columnNames: ['user_id'],
+            name: 'albums_artist_id',
+            columnNames: ['artist_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'users',
+            referencedTableName: 'artists',
+            onDelete: 'SET NULL',
+            onUpdate: 'CASCADE',
+          },
+          {
+            name: 'albums_category_id',
+            columnNames: ['category_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'categories',
+            onDelete: 'SET NULL',
+            onUpdate: 'CASCADE',
+          },
+          {
+            name: 'albums_session_id',
+            columnNames: ['session_id'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'sessions',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
           },
@@ -52,6 +76,6 @@ export default class CreateSessionsTable1595002599184
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('sessions');
+    await queryRunner.dropTable('albums');
   }
 }

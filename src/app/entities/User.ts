@@ -11,16 +11,16 @@ class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   name: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   email: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   password: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   is_admin: boolean;
 
   @CreateDateColumn()
