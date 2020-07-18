@@ -15,12 +15,17 @@ export function authenticated(
   next: NextFunction,
 ): void {
   const { authorization } = request.headers;
+  const { _token } = request.query as { _token: string };
 
-  if (!authorization) {
+  if (!authorization || !_token) {
     throw new Error('JWT token is missing!');
   }
 
-  const [, token] = authorization.split(' ');
+  let [, token] = authorization.split(' ');
+
+  if (!token && _token) {
+    token = _token;
+  }
 
   const { secret } = AuthConfig;
 

@@ -11,6 +11,7 @@ import CategoryController from '@controllers/CategoryController';
 import ArtistController from '@controllers/ArtistController';
 import AlbumController from '@controllers/AlbumController';
 import MusicController from '@controllers/MusicController';
+import StreamController from '@controllers/StreamController';
 
 import CategoryArtistController from '@controllers/CategoryArtistController';
 import CategoryAlbumController from '@controllers/CategoryAlbumController';
@@ -80,5 +81,7 @@ routes.post(
   ]),
   MusicController.store,
 );
+
+routes.get('/stream/:music_id', StreamController.show);
 
 export default routes;
