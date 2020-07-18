@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
 import AuthConfig from '@config/auth';
+import auth from '@config/auth';
 
 interface ITokenPayload {
   iat: number;
@@ -17,13 +18,16 @@ export function authenticated(
   const { authorization } = request.headers;
   const { _token } = request.query as { _token: string };
 
-  if (!authorization || !_token) {
+  if (!authorization && !_token) {
+    console.log(authorization, _token);
     throw new Error('JWT token is missing!');
   }
 
-  let [, token] = authorization.split(' ');
+  let token = '';
 
-  if (!token && _token) {
+  if (authorization) {
+    [, token] = authorization.split(' ');
+  } else {
     token = _token;
   }
 
