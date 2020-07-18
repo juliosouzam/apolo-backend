@@ -1,4 +1,7 @@
 import { Router } from 'express';
+import multer from 'multer';
+
+import uploadConfig from '@config/upload';
 
 import RegisterController from '@controllers/RegisterController';
 import LoginController from '@controllers/LoginController';
@@ -14,6 +17,8 @@ import CategoryAlbumController from '@controllers/CategoryAlbumController';
 import { authenticated } from '../app/middlewares';
 
 const routes = Router();
+const uploadFile = multer(uploadConfig({ type: 'file' }));
+// const uploadMusic = multer(uploadConfig({ type: 'music' }));
 
 routes.get('/', (request, response) => response.json({ status: true }));
 
@@ -31,7 +36,11 @@ routes.post('/sessions/:session_id/categories', CategoryController.store);
 // Artists
 
 routes.get('/sessions/:session_id/artists', ArtistController.index);
-routes.post('/sessions/:session_id/artists', ArtistController.store);
+routes.post(
+  '/sessions/:session_id/artists',
+  uploadFile.single('file'),
+  ArtistController.store,
+);
 
 routes.get(
   '/sessions/:session_id/categories/:category_id/artists',
@@ -42,7 +51,11 @@ routes.get(
 // - Name, Cover, Artist, Category, Session
 
 routes.get('/sessions/:session_id/albums', AlbumController.index);
-routes.post('/sessions/:session_id/albums', AlbumController.store);
+routes.post(
+  '/sessions/:session_id/albums',
+  uploadFile.single('file'),
+  AlbumController.store,
+);
 
 routes.get(
   '/sessions/:session_id/categories/:category_id/albums',

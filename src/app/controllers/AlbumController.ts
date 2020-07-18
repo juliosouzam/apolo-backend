@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import { classToClass } from 'class-transformer';
 
 import Album from '@entities/Album';
 
@@ -11,12 +12,12 @@ class AlbumController {
 
     const albums = await albumRepository.find({ where: { session_id } });
 
-    return response.json(albums);
+    return response.json(classToClass(albums));
   }
 
   public async store(request: Request, response: Response): Promise<Response> {
     const { session_id } = request.params;
-    const { name, cover, category_id, artist_id } = request.body;
+    const { name, category_id, artist_id } = request.body;
 
     const albumRepository = getRepository(Album);
 
@@ -30,7 +31,7 @@ class AlbumController {
 
     const album = albumRepository.create({
       name,
-      cover,
+      cover: request.file.filename,
       session_id,
       category_id,
       artist_id,
@@ -38,7 +39,7 @@ class AlbumController {
 
     await albumRepository.save(album);
 
-    return response.json(album);
+    return response.json(classToClass(album));
   }
 }
 

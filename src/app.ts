@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { resolve } from 'path';
 import express, { Express } from 'express';
 
 import './database';
@@ -18,6 +19,10 @@ class Application {
   middlewares() {
     this.express.use(express.json());
     this.express.use(express.urlencoded({ extended: true }));
+    this.express.use(
+      '/files',
+      express.static(resolve(__dirname, '..', 'tmp', 'uploads')),
+    );
   }
 
   routes() {

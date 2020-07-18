@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import { classToClass } from 'class-transformer';
 
 import Artist from '@entities/Artist';
 
@@ -13,7 +14,7 @@ class CategoryArtistController {
       where: { session_id, category_id },
     });
 
-    return response.json(artists);
+    return response.json(classToClass(artists));
   }
 }
 
